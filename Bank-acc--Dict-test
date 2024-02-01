@@ -1,0 +1,155 @@
+#Aiden Connolly
+#W0478181 
+#Prog1400
+#Project:Bank_Account
+#V.5
+# Programming Language: Python 3
+import sys
+tries = 0
+#Functions
+#Users have 3 attempts anytime they must input information, If there are 3 invalid attempts they will get a message and program will shut down.
+def attempts():
+    global tries
+    tries += 1
+    if tries == 3:
+        print("\n\nToo many failed attemps please try again later.")
+        sys.exit()
+
+accounts = {
+    1: {"Owner": "Joe " "Biden", "Contact": "123-456-7890", "Balance": 500}
+}
+#Create a bank Account with dictionary
+def create_account(accounts):
+        new_account_id = len(accounts) + 1
+        First_Name = input("\nEnter new customers First Name:")
+        if not First_Name.isalpha():
+            attempts()
+            return
+        Last_Name = input("\nEnter new customers Last Name:")
+        if not Last_Name.isalpha():
+            attempts()
+            return
+        Contact = input("\nEnter new customers Phone Number:")
+        if not Contact.isdigit() and len(Contact) != 10:
+            attempts()
+            return
+        Contact = f"{Contact[:3]}-{Contact[3:6]}-{Contact[6:]}"
+        accounts[new_account_id] = {"Owner": f"{First_Name} {Last_Name}", "Contact": Contact,"Balance": 0}
+        print(f"\nSuccessfully Created Account. Your Account Number is {new_account_id}") 
+
+def display_Balance(accounts):
+    while True:
+        try:
+            search_acc_id = int(input("Enter Account ID to continue: "))
+        except ValueError:
+            attempts()
+            continue
+        if search_acc_id in accounts:
+            account = accounts[search_acc_id]
+        print(f"\nAccount Owner:{account['Owner']}, Balance: ${account['Balance']}")
+        break
+    
+def deposit(accounts):
+    while True:
+        try:
+            search_acc_id = int(input("Enter Account ID to continue: "))
+            break
+        except ValueError:
+            print("\nInvalid input. Please enter a valid Account ID.")
+            attempts()
+            continue
+    while True:
+        
+        if search_acc_id in accounts:
+            account = accounts[search_acc_id]
+            print(f'\nWelcome {account["Owner"]}')
+            try:
+                deposit_amount = float(input("\nEnter the amount you would like to Deposit: $"))
+            except ValueError:
+                print("\n\nInvalid input. Please enter a valid amount.")
+                attempts()
+                continue
+            if deposit_amount > 0:
+                account["Balance"] += deposit_amount
+                print(f"\nDeposit: ${deposit_amount}, New Balance: ${account['Balance']}.")
+                break
+            else:
+                print("\n\nPlease enter a valid deposit amount.")
+                attempts()
+                continue
+        else:
+            print("\nAccount not found. Please enter a valid Account ID.")
+            attempts()
+            continue
+
+def withdrawal(accounts):
+    while True:
+        try:
+            search_acc_id = int(input("Enter Account ID to continue: "))
+            break
+        except ValueError:
+            print("\nInvalid input. Please enter a valid Account ID.")
+            attempts()
+            continue
+    while True:
+        if search_acc_id in accounts:
+            account = accounts[search_acc_id]
+            print(f'\nWelcome {account["Owner"]}')
+            try:
+                withdraw_amount = float(input("\nEnter the amount you would like to Withdraw: $"))
+            except ValueError:
+                print("\nInvalid input. Please enter a valid amount.")
+                attempts()
+                continue
+            if withdraw_amount >= 0 and withdraw_amount % 5 == 0 and account["Balance"] >= withdraw_amount:
+                account["Balance"] -= withdraw_amount
+                print(f"\nWithdrawn: ${withdraw_amount}, New Balance: ${account['Balance']}.")
+                break
+            elif account["Balance"] <= withdraw_amount:
+                print("\nInsufficient funds. Please enter a valid withdrawal amount.")
+                attempts()
+                continue
+            elif not (withdraw_amount >= 0 and withdraw_amount % 5 == 0):
+                print("\nInvalid input. Please enter a valid amount that is a multiple of 5.")
+                attempts()
+                continue
+            else:
+                print("\nAccount not found. Please enter a valid Account ID.")
+                attempts()
+
+
+while True:
+    user_input = input("""
+        Welcome To Dyan Bryan Banking Services
+        Please 
+       
+        1. Create Account
+       
+        2. Display Balance
+       
+        3. Make A Deposit
+       
+        4. Make a Withdraw
+
+        5. Exit\n
+        :""")
+    #How Users input will pull functions
+    if user_input.isdigit():
+        user_input = int(user_input)
+        if user_input == 1:
+            create_account(accounts)
+        elif user_input == 2:
+            display_Balance(accounts)
+        elif user_input == 3:
+            deposit(accounts)
+        elif user_input == 4:
+            withdrawal(accounts)        
+        elif user_input == 5:
+            print('Thank You, Goodbye')
+            sys.exit()
+        else:
+            print("\nInvalid input.")
+            attempts()    
+    else:
+        print("\nInvalid input.")
+        attempts()
