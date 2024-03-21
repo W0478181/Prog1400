@@ -1,0 +1,63 @@
+from datetime import datetime
+# Encapsulation: Attributes and methods are encapsulated within classes
+class Person:
+    def __init__(self, first_name, last_name, age, mobile, email):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.age = age
+        self.mobile = mobile
+        self.email = email
+    
+    def details(self):
+        return f"Name: {self.first_name} {self.last_name}, Age: {self.age}, Mobile: {self.mobile}, Email: {self.email}"
+    
+class Driver(Person):
+    def __init__(self, first_name, last_name, age, mobile, email, v_make, v_model, v_color, v_type, plate):
+        super().__init__(first_name, last_name, age, mobile, email)
+        self.v_make = v_make
+        self.v_model = v_model
+        self.v_color = v_color
+        self.v_type = v_type
+        self.plate = plate
+
+    def details(self):
+        return f"Driver {super().details()},\nVehicle: {self.v_color} {self.v_make} {self.v_model} {self.v_type}, License Plate {self.plate}"    
+    
+class Rider(Person):
+    def __init__(self, first_name, last_name, age, mobile, email):
+        super().__init__(first_name, last_name, age, mobile, email)
+
+    def details(self):
+        return f"\nRider {super().details()}"
+    
+class Route:
+    def __init__(self, origin, stop, destination):
+        self.origin = origin
+        self.stop = stop
+        self.destination = destination
+
+    def details(self):
+        return f"\nTrip Details:\nOrigin: {self.origin}, Stops: {self.stop}, Destination {self.destination}"
+    
+class Trip(Route):
+    def __init__(self, origin, stop, destination, leave_time, stop_time, arrival_time):
+        super().__init__(origin, stop, destination)
+        self.leave_time = leave_time
+        self.stop_time = stop_time
+        self.arrival_time = arrival_time
+
+    def details(self):
+        return f"{super().details()},\nLeaving Time: {self.leave_time}, Stop Time: {self.stop_time}, Arrival Time: {self.arrival_time}"
+    
+def run():
+    driver1 = Driver("Aiden","Connolly","19","123-456-7890","asdg@gmail.com","Nissan","Sentra","Black","car","B1T5Y3")
+    rider1 = Rider("Dyan","Bryan","37","987-654-3210","cig@gmail.com")
+    trip = Trip("St.Andrews","Bayside","Campus",datetime(2024,2,15,7,30),datetime(2024,2,15,8,0),datetime(2024,2,15,8,30))
+
+    journey1 = [driver1, rider1, trip]
+
+    for i in journey1:
+        print(i.details())
+
+if __name__ == "__main__":
+    run()
